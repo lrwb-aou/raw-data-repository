@@ -221,11 +221,14 @@ class _TestDb(object):
   def _setup_hpos(self, org_dao=None):
     hpo_dao = HPODao()
     hpo_dao.insert(HPO(hpoId=UNSET_HPO_ID, name='UNSET', displayName='Unset',
-                       organizationType=OrganizationType.UNSET))
+                       organizationType=OrganizationType.UNSET,
+                       organizationTypeCode=''))
     hpo_dao.insert(HPO(hpoId=PITT_HPO_ID, name='PITT', displayName='Pittsburgh',
-                       organizationType=OrganizationType.HPO))
+                       organizationType=OrganizationType.HPO,
+                       organizationTypeCode='HPO'))
     hpo_dao.insert(HPO(hpoId=AZ_HPO_ID, name='AZ_TUCSON', displayName='Arizona',
-                       organizationType=OrganizationType.HPO))
+                       organizationType=OrganizationType.HPO,
+                       organizationTypeCode='HPO'))
     self.hpo_id = PITT_HPO_ID
 
     org_dao = OrganizationDao()

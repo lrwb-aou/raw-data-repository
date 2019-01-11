@@ -13,6 +13,7 @@ class HPO(Base):
   displayName = Column('display_name', String(255))
   organizationType = Column('organization_type', Enum(OrganizationType),
                             default=OrganizationType.UNSET)
+  organizationTypeCode = Column('organization_type_code', String(20), default='')
   organizations = relationship('Organization', cascade='all, delete-orphan',
                                order_by='Organization.externalId')
   isObsolete = Column('is_obsolete', Enum(ObsoleteStatus))

@@ -101,7 +101,8 @@ class HPOImporter(CsvImporter):
       return None
     return HPO(name=row[HPO_AWARDEE_ID_COLUMN].upper(),
                displayName=row[HPO_NAME_COLUMN],
-               organizationType=organization_type)
+               organizationType=organization_type,
+               organizationTypeCode=type_str)
 
   def _insert_entity(self, entity, existing_map, session, dry_run):
     # HPO IDs are not autoincremented by the database; manually set it here.
