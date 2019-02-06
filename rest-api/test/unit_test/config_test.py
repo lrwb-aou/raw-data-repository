@@ -6,7 +6,7 @@ from mock import patch
 import config
 from clock import FakeClock
 from test.unit_test.unit_test_util import FlaskTestBase
-from config import update_aes_key
+from api_util import update_aes_key
 
 
 class TestConfig(FlaskTestBase):

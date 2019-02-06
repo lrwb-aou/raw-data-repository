@@ -1,5 +1,8 @@
 """Utilities used by the API definition, and authentication/authorization/roles."""
 import datetime
+import random
+import string
+import clock
 
 from dateutil.parser import parse
 from werkzeug.exceptions import BadRequest
@@ -127,3 +130,26 @@ def get_organization_id_from_external_id(obj, organization_dao):
     if organization is not None:
       return organization.organizationId
   return None
+
+def update_aes_key(current_key):
+  """
+  Generate a new key if there is no existing key, otherwise try to generate a new key roughly
+  every six months.
+  :param current_key: AES key from project config
+  :return: key
+  """
+  month = clock.CLOCK.now().month
+  new_key = '{0}{1}'.format(month if month < 10 else 9,
+              ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(15)))
+
+  if current_key is not None:
+    try:
+      cm = int(current_key[:1])
+      if month < 7 and cm < 7:
+        return current_key
+      if month > 6 and cm > 6:
+        return current_key
+    except ValueError:
+      pass
+
+  return new_key
