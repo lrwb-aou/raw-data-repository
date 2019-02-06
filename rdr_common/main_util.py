@@ -5,7 +5,6 @@ import logging
 import sys
 import time
 
-
 def configure_logging():
   logging.Formatter.converter = time.gmtime  # Log in UTC.
   logging.basicConfig(

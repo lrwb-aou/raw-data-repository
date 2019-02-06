@@ -3,6 +3,8 @@
 Contains things such as the accounts allowed access to the system.
 """
 import logging
+import random
+import string
 
 from google.appengine.ext import ndb
 from werkzeug.exceptions import NotFound
@@ -215,3 +217,26 @@ def get_config():
                          lambda: load(CONFIG_SINGLETON_KEY),
                          cache_ttl_seconds=CONFIG_CACHE_TTL_SECONDS)
   return model.configuration
+
+def update_aes_key(current_key):
+  """
+  Generate a new key if there is no existing key, otherwise try to generate a new key roughly
+  every six months.
+  :param current_key: AES key from project config
+  :return: key
+  """
+  month = clock.CLOCK.now().month
+  new_key = '{0}{1}'.format(month if month < 10 else 9,
+              ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(15)))
+
+  if current_key is not None:
+    try:
+      cm = int(current_key[:1])
+      if month < 7 and cm < 7:
+        return current_key
+      if month > 6 and cm > 6:
+        return current_key
+    except ValueError:
+      pass
+
+  return new_key
